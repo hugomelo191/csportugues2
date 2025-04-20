@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glow-text {
+    text-shadow: 0 0 10px theme('colors.cs-neon'), 0 0 20px theme('colors.cs-neon/50');
+  }
+
+  .shadow-neon {
+    box-shadow: 0 0 15px theme('colors.cs-neon/30'), 0 0 5px theme('colors.cs-neon/15');
+  }
+
+  .shadow-blue {
+    box-shadow: 0 0 15px theme('colors.cs-blue/30'), 0 0 5px theme('colors.cs-blue/15');
+  }
+  
+  .clip-angled-right {
+    -webkit-clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0 100%);
+  }
+  
+  .clip-angled-left {
+    -webkit-clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(5% 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .sheen-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sheen-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to bottom right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.05) 100%
+    );
+    transform: rotate(30deg);
+    pointer-events: none;
+  }
+}
