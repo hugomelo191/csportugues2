@@ -44,6 +44,17 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        // CS2 tema cores personalizadas
+        'cs-dark': {
+          DEFAULT: '#0A0C10',
+          '800': '#121520',
+          '700': '#1B1F2E',
+          '600': '#252A3C'
+        },
+        'cs-neon': '#00FF8F',
+        'cs-blue': '#3498FE',
+        'cs-yellow': '#FFD700',
+        'cs-red': '#FF3B30',
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
