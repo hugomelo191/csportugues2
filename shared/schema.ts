@@ -7,7 +7,7 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role").notNull().default("user"),
+  role: text("role").notNull().default("user"), // 'user', 'admin', 'moderator'
   createdAt: timestamp("created_at").defaultNow(),
 });
 
@@ -35,6 +35,15 @@ export const teams = pgTable("teams", {
   updatedAt: timestamp("updated_at"),
 });
 
+export const insertTeamSchema = createInsertSchema(teams).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  status: true,
+  rejectionReason: true,
+});
+
+export type InsertTeam = z.infer<typeof insertTeamSchema>;
 export type Team = typeof teams.$inferSelect;
 
 // Matches
@@ -111,6 +120,15 @@ export const streamers = pgTable("streamers", {
   updatedAt: timestamp("updated_at"),
 });
 
+export const insertStreamerSchema = createInsertSchema(streamers).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  verified: true,
+  rejectionReason: true,
+});
+
+export type InsertStreamer = z.infer<typeof insertStreamerSchema>;
 export type Streamer = typeof streamers.$inferSelect;
 
 // Players
@@ -141,6 +159,13 @@ export const playerProfiles = pgTable("player_profiles", {
   updatedAt: timestamp("updated_at"),
 });
 
+export const insertPlayerProfileSchema = createInsertSchema(playerProfiles).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertPlayerProfile = z.infer<typeof insertPlayerProfileSchema>;
 export type PlayerProfile = typeof playerProfiles.$inferSelect;
 
 // User Profiles
@@ -156,3 +181,30 @@ export const userProfiles = pgTable("user_profiles", {
 });
 
 export type UserProfile = typeof userProfiles.$inferSelect;
+
+// Notificações
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  type: text("type").notNull(), // 'team_approved', 'team_rejected', 'streamer_approved', 'streamer_rejected', 'message'
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  read: boolean("read").default(false),
+  relatedId: integer("related_id"), // ID do elemento relacionado (equipa, streamer, etc.)
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type Notification = typeof notifications.$inferSelect;
+
+// Acções de administração
+export const adminActions = pgTable("admin_actions", {
+  id: serial("id").primaryKey(),
+  adminId: integer("admin_id").notNull().references(() => users.id),
+  action: text("action").notNull(), // 'approve_team', 'reject_team', 'approve_streamer', 'reject_streamer'
+  entityId: integer("entity_id").notNull(),
+  entityType: text("entity_type").notNull(), // 'team', 'streamer'
+  reason: text("reason"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type AdminAction = typeof adminActions.$inferSelect;
