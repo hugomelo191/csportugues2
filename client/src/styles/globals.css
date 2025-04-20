@@ -1,0 +1,204 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-inter antialiased bg-cs-dark text-foreground;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(0, 255, 170, 0.03) 0%, transparent 30%),
+      radial-gradient(circle at 90% 80%, rgba(62, 123, 250, 0.03) 0%, transparent 30%);
+    min-height: 100vh;
+  }
+
+  :root {
+    --cs-dark: 230 14% 5%;
+    --cs-dark-800: 230 19% 15%;
+    --cs-dark-700: 230 19% 18%;
+    --cs-dark-600: 230 19% 22%;
+    --cs-neon: 160 100% 50%;
+    --cs-red: 348 100% 62%;
+    --cs-blue: 222 96% 61%;
+    --cs-yellow: 48 100% 50%;
+    
+    --background: var(--cs-dark);
+    --foreground: 210 40% 98%;
+
+    --card: var(--cs-dark-800);
+    --card-foreground: 210 40% 98%;
+
+    --popover: var(--cs-dark-800);
+    --popover-foreground: 210 40% 98%;
+
+    --primary: var(--cs-neon);
+    --primary-foreground: var(--cs-dark);
+
+    --secondary: var(--cs-dark-700);
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: var(--cs-dark-700);
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: var(--cs-neon);
+    --accent-foreground: var(--cs-dark);
+
+    --destructive: var(--cs-red);
+    --destructive-foreground: 210 40% 98%;
+
+    --border: var(--cs-dark-600);
+    --input: var(--cs-dark-700);
+    --ring: var(--cs-neon);
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .clip-polygon {
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+  }
+  
+  .clip-header {
+    clip-path: polygon(0 0, 100% 0, 97% 100%, 3% 100%);
+  }
+  
+  .clip-angled-left {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 5% 100%);
+  }
+  
+  .clip-angled-right {
+    clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);
+  }
+  
+  .glow-text {
+    text-shadow: 0 0 5px rgba(0, 255, 170, 0.7);
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .shadow-neon {
+    box-shadow: 0 0 5px rgba(0, 255, 170, 0.5), 0 0 20px rgba(0, 255, 170, 0.2);
+  }
+  
+  .shadow-neon-hover {
+    box-shadow: 0 0 8px rgba(0, 255, 170, 0.7), 0 0 25px rgba(0, 255, 170, 0.4);
+  }
+  
+  .shadow-red {
+    box-shadow: 0 0 5px rgba(255, 62, 95, 0.5), 0 0 20px rgba(255, 62, 95, 0.2);
+  }
+  
+  .shadow-blue {
+    box-shadow: 0 0 5px rgba(62, 123, 250, 0.5), 0 0 20px rgba(62, 123, 250, 0.2);
+  }
+  
+  .sheen-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .sheen-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.04) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: sheen 5s infinite linear;
+  }
+  
+  @keyframes sheen {
+    0% {
+      transform: rotate(30deg) translate(-100%, -100%);
+    }
+    100% {
+      transform: rotate(30deg) translate(100%, 100%);
+    }
+  }
+}
+
+.font-orbitron {
+  font-family: 'Orbitron', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.bg-cs-dark {
+  background-color: hsl(var(--cs-dark));
+}
+
+.bg-cs-dark-800 {
+  background-color: hsl(var(--cs-dark-800));
+}
+
+.bg-cs-dark-700 {
+  background-color: hsl(var(--cs-dark-700));
+}
+
+.bg-cs-dark-600 {
+  background-color: hsl(var(--cs-dark-600));
+}
+
+.bg-cs-neon, .text-cs-neon {
+  color: hsl(var(--cs-neon));
+}
+
+.bg-cs-neon {
+  background-color: hsl(var(--cs-neon));
+}
+
+.text-cs-dark-800 {
+  color: hsl(var(--cs-dark-800));
+}
+
+.bg-cs-red, .text-cs-red {
+  color: hsl(var(--cs-red));
+}
+
+.bg-cs-red {
+  background-color: hsl(var(--cs-red));
+}
+
+.bg-cs-blue, .text-cs-blue {
+  color: hsl(var(--cs-blue));
+}
+
+.bg-cs-blue {
+  background-color: hsl(var(--cs-blue));
+}
+
+.bg-cs-yellow, .text-cs-yellow {
+  color: hsl(var(--cs-yellow));
+}
+
+.bg-cs-yellow {
+  background-color: hsl(var(--cs-yellow));
+}
+
+.border-cs-dark-600 {
+  border-color: hsl(var(--cs-dark-600));
+}
+
+.border-cs-neon {
+  border-color: hsl(var(--cs-neon));
+}
