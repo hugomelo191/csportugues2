@@ -221,6 +221,15 @@ export class MemStorage implements IStorage {
     this.teams.set(id, team);
     this.logActivity('create', id, 'team');
     
+    // Enviar notificação ao dono da equipa sobre o estado pendente
+    await this.createUserNotification({
+      userId: teamData.ownerId,
+      type: 'info',
+      title: 'Equipa Criada!',
+      message: `A equipa ${team.name} foi criada e está aguardando aprovação por um administrador.`,
+      relatedId: id
+    });
+    
     // Remover dados internos para o retorno
     const {status, rejectionReason, ...publicTeam} = team;
     return publicTeam;
@@ -342,6 +351,15 @@ export class MemStorage implements IStorage {
     
     this.logActivity('approve_member', teamId, 'team_member');
     
+    // Enviar notificação ao utilizador aceite na equipa
+    await this.createUserNotification({
+      userId: userId,
+      type: 'success',
+      title: 'Pedido de Equipa Aceito!',
+      message: `O seu pedido para entrar na equipa ${team.name} foi aceito. Já faz parte da equipa!`,
+      relatedId: teamId
+    });
+    
     // Remover dados internos para o retorno
     const {status, rejectionReason, ...publicTeam} = team;
     return publicTeam;
@@ -399,6 +417,15 @@ export class MemStorage implements IStorage {
     
     this.streamers.set(id, streamer);
     this.logActivity('create', id, 'streamer');
+    
+    // Enviar notificação ao aplicante
+    await this.createUserNotification({
+      userId: streamerData.userId,
+      type: 'info',
+      title: 'Candidatura Submetida!',
+      message: `A sua candidatura para ${streamer.applicationType} foi submetida e está a aguardar revisão.`,
+      relatedId: id
+    });
     
     // Remover dados internos para o retorno
     const {verified, userId, rejectionReason, applicationType, ...publicStreamer} = streamer;
@@ -469,6 +496,16 @@ export class MemStorage implements IStorage {
     this.players.set(id, player);
     
     this.logActivity('create', id, 'player');
+    
+    // Enviar notificação ao jogador
+    await this.createUserNotification({
+      userId: playerData.userId,
+      type: 'success',
+      title: 'Perfil de Jogador Criado!',
+      message: 'O seu perfil de jogador foi criado com sucesso. Agora pode participar em equipas e competições!',
+      relatedId: id
+    });
+    
     return playerProfile;
   }
   
