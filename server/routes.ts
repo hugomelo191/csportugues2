@@ -338,6 +338,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Notificações
+  app.get("/api/notifications", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Não autorizado" });
+    }
+    
+    try {
+      const notifications = await storage.getUserNotifications(req.user.id);
+      res.json(notifications);
+    } catch (err) {
+      res.status(500).json({ message: "Falha ao obter notificações" });
+    }
+  });
+
+  app.put("/api/notifications/:id/read", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Não autorizado" });
+    }
+    
+    try {
+      await storage.markNotificationAsRead(parseInt(req.params.id));
+      res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ message: "Falha ao marcar notificação como lida" });
+    }
+  });
+
   const httpServer = createServer(app);
 
   return httpServer;

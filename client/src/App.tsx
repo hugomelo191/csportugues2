@@ -15,6 +15,7 @@ import AuthPage from "@/pages/auth-page";
 import PlayerProfilePage from "@/pages/player-profile-page";
 import TeamCreationPage from "@/pages/team-creation-page";
 import StreamerApplicationPage from "@/pages/streamer-application-page";
+import AdminPage from "@/pages/admin-page";
 import { ProtectedRoute } from "./lib/protected-route";
 import { AuthProvider } from "./hooks/use-auth";
 
@@ -27,6 +28,7 @@ function Router() {
       <ProtectedRoute path="/player-profile" component={PlayerProfilePage} />
       <ProtectedRoute path="/matchmaking" component={MatchmakingPage} />
       <ProtectedRoute path="/streamer-application" component={StreamerApplicationPage} />
+      <ProtectedRoute path="/admin" component={AdminPage} />
       <Route path="/matches" component={MatchesPage} />
       <Route path="/tournaments" component={TournamentsPage} />
       <Route path="/news" component={NewsPage} />

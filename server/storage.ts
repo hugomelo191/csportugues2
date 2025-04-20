@@ -89,6 +89,11 @@ export interface IStorage {
   getUserProfile(userId: number): Promise<UserProfile | undefined>;
   updateUserProfile(userId: number, profile: any): Promise<UserProfile>;
   
+  // Notificações
+  getUserNotifications(userId: number): Promise<Notification[]>;
+  markNotificationAsRead(id: number): Promise<void>;
+  createUserNotification(notification: any): Promise<Notification>;
+  
   // Admin
   getAdminStats(): Promise<AdminStats>;
   
@@ -106,6 +111,7 @@ export class MemStorage implements IStorage {
   private players: Map<number, Player>;
   private playerProfiles: Map<number, PlayerProfile>;
   private userProfiles: Map<number, UserProfile>;
+  private notifications: Map<number, Notification>;
   private teamMemberRequests: TeamMemberRequest[];
   private activityLog: Array<{
     action: string;

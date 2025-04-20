@@ -3,13 +3,15 @@ import { Link, useLocation } from 'wouter';
 import { useAuth } from '@/hooks/use-auth';
 import MobileMenu from './MobileMenu';
 import AuthModal from '../auth/AuthModal';
+import NotificationsPanel from './NotificationsPanel';
 import { 
   ChevronDown, 
   UserCircle2, 
   Users, 
   Radio, 
   LogOut,
-  PlusCircle
+  PlusCircle,
+  ShieldAlert
 } from 'lucide-react';
 
 const Header = () => {
@@ -134,47 +136,65 @@ const Header = () => {
               </button>
               
               {user ? (
-                <div ref={userMenuRef} className="relative">
-                  <button 
-                    onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                    className="px-4 py-2 rounded bg-gradient-to-r from-cs-dark-700 to-cs-dark-600 hover:from-cs-neon/20 hover:to-cs-neon/5 flex items-center space-x-2 text-white transition duration-300 border border-cs-dark-600 hover:border-cs-neon/30 shadow-sm"
-                  >
-                    <UserCircle2 className="h-4 w-4 mr-1" />
-                    <span className="font-medium">{user.username}</span>
-                    <ChevronDown className={`h-4 w-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
-                  </button>
-                  
-                  {isUserMenuOpen && (
-                    <div className="absolute top-12 right-0 w-52 bg-cs-dark-900 border border-cs-dark-700 rounded-md shadow-lg shadow-black/50 p-2 z-50">
-                      <Link href="/player-profile" onClick={() => setIsUserMenuOpen(false)}>
-                        <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
-                          <UserCircle2 className="h-4 w-4 mr-2 text-cs-neon" />
-                          <span>Perfil de Jogador</span>
-                        </div>
-                      </Link>
-                      <Link href="/team-creation" onClick={() => setIsUserMenuOpen(false)}>
-                        <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
-                          <Users className="h-4 w-4 mr-2 text-cs-neon" />
-                          <span>Criar Equipa</span>
-                        </div>
-                      </Link>
-                      <Link href="/streamer-application" onClick={() => setIsUserMenuOpen(false)}>
-                        <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
-                          <Radio className="h-4 w-4 mr-2 text-cs-neon" />
-                          <span>Streamer/Caster</span>
-                        </div>
-                      </Link>
-                      <div className="border-t border-cs-dark-700 my-1"></div>
-                      <button 
-                        onClick={handleLogout}
-                        className="w-full flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition"
-                      >
-                        <LogOut className="h-4 w-4 mr-2 text-cs-neon" />
-                        <span>Terminar sessão</span>
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <>
+                  {/* Componente de Notificações */}
+                  <div className="hidden md:block">
+                    <NotificationsPanel />
+                  </div>
+                
+                  <div ref={userMenuRef} className="relative">
+                    <button 
+                      onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                      className="px-4 py-2 rounded bg-gradient-to-r from-cs-dark-700 to-cs-dark-600 hover:from-cs-neon/20 hover:to-cs-neon/5 flex items-center space-x-2 text-white transition duration-300 border border-cs-dark-600 hover:border-cs-neon/30 shadow-sm"
+                    >
+                      <UserCircle2 className="h-4 w-4 mr-1" />
+                      <span className="font-medium">{user.username}</span>
+                      <ChevronDown className={`h-4 w-4 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    
+                    {isUserMenuOpen && (
+                      <div className="absolute top-12 right-0 w-52 bg-cs-dark-900 border border-cs-dark-700 rounded-md shadow-lg shadow-black/50 p-2 z-50">
+                        <Link href="/player-profile" onClick={() => setIsUserMenuOpen(false)}>
+                          <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
+                            <UserCircle2 className="h-4 w-4 mr-2 text-cs-neon" />
+                            <span>Perfil de Jogador</span>
+                          </div>
+                        </Link>
+                        <Link href="/team-creation" onClick={() => setIsUserMenuOpen(false)}>
+                          <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
+                            <Users className="h-4 w-4 mr-2 text-cs-neon" />
+                            <span>Criar Equipa</span>
+                          </div>
+                        </Link>
+                        <Link href="/streamer-application" onClick={() => setIsUserMenuOpen(false)}>
+                          <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
+                            <Radio className="h-4 w-4 mr-2 text-cs-neon" />
+                            <span>Streamer/Caster</span>
+                          </div>
+                        </Link>
+                        
+                        {/* Link para administração (apenas para admins) */}
+                        {user.role === 'admin' && (
+                          <Link href="/admin" onClick={() => setIsUserMenuOpen(false)}>
+                            <div className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition">
+                              <ShieldAlert className="h-4 w-4 mr-2 text-orange-500" />
+                              <span>Administração</span>
+                            </div>
+                          </Link>
+                        )}
+                        
+                        <div className="border-t border-cs-dark-700 my-1"></div>
+                        <button 
+                          onClick={handleLogout}
+                          className="w-full flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-cs-dark-800 hover:text-white rounded transition"
+                        >
+                          <LogOut className="h-4 w-4 mr-2 text-cs-neon" />
+                          <span>Terminar sessão</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </>
               ) : (
                 <div className="relative group">
                   <button 
