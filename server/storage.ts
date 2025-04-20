@@ -133,6 +133,7 @@ export class MemStorage implements IStorage {
     this.players = new Map();
     this.playerProfiles = new Map();
     this.userProfiles = new Map();
+    this.notifications = new Map();
     this.teamMemberRequests = [];
     this.activityLog = [];
     this.currentId = 1;
@@ -240,6 +241,15 @@ export class MemStorage implements IStorage {
     this.teams.set(id, team);
     this.logActivity('approve', id, 'team');
     
+    // Enviar notificação ao dono da equipa
+    await this.createUserNotification({
+      userId: team.ownerId,
+      type: 'success',
+      title: 'Equipa Aprovada!',
+      message: `A equipa ${team.name} foi aprovada e já se encontra visível publicamente.`,
+      relatedId: id
+    });
+    
     // Remover dados internos para o retorno
     const {status, rejectionReason, ...publicTeam} = team;
     return publicTeam;
@@ -255,6 +265,15 @@ export class MemStorage implements IStorage {
     team.rejectionReason = reason;
     this.teams.set(id, team);
     this.logActivity('reject', id, 'team');
+    
+    // Enviar notificação ao dono da equipa
+    await this.createUserNotification({
+      userId: team.ownerId,
+      type: 'error',
+      title: 'Equipa Rejeitada',
+      message: `A equipa ${team.name} foi rejeitada. Motivo: ${reason || 'Não especificado'}`,
+      relatedId: id
+    });
   }
   
   async getTeamsByOwner(userId: number): Promise<Team[]> {
@@ -401,6 +420,17 @@ export class MemStorage implements IStorage {
     this.streamers.set(id, streamer);
     this.logActivity('verify', id, 'streamer');
     
+    // Enviar notificação ao streamer
+    if (streamer.userId) {
+      await this.createUserNotification({
+        userId: streamer.userId,
+        type: 'success',
+        title: 'Streamer Verificado!',
+        message: `A sua conta de ${streamer.applicationType || 'streamer'} foi verificada e já se encontra visível publicamente.`,
+        relatedId: id
+      });
+    }
+    
     // Remover dados internos para o retorno
     const {verified, userId, rejectionReason, applicationType, ...publicStreamer} = streamer;
     return publicStreamer;
@@ -515,6 +545,44 @@ export class MemStorage implements IStorage {
     this.userProfiles.set(existingProfile.id, updatedProfile);
     this.logActivity('update', existingProfile.id, 'user_profile');
     return updatedProfile;
+  }
+  
+  // Notificações
+  async getUserNotifications(userId: number): Promise<Notification[]> {
+    return Array.from(this.notifications.values())
+      .filter(notification => notification.userId === userId)
+      .sort((a, b) => {
+        // Ordenar por data (mais recentes primeiro) e não lidas primeiro
+        if (a.read !== b.read) {
+          return a.read ? 1 : -1;
+        }
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+  }
+
+  async markNotificationAsRead(id: number): Promise<void> {
+    const notification = this.notifications.get(id);
+    if (notification) {
+      notification.read = true;
+      this.notifications.set(id, notification);
+    }
+  }
+
+  async createUserNotification(notification: any): Promise<Notification> {
+    const id = this.currentId++;
+    const newNotification: Notification = {
+      id,
+      userId: notification.userId,
+      type: notification.type || 'info',
+      title: notification.title,
+      message: notification.message,
+      read: false,
+      createdAt: new Date(),
+      relatedId: notification.relatedId
+    };
+    
+    this.notifications.set(id, newNotification);
+    return newNotification;
   }
   
   // Admin
