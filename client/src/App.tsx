@@ -12,6 +12,9 @@ import NewsPage from "@/pages/news-page";
 import StreamersPage from "@/pages/streamers-page";
 import MatchmakingPage from "@/pages/matchmaking-page";
 import AuthPage from "@/pages/auth-page";
+import PlayerProfilePage from "@/pages/player-profile-page";
+import TeamCreationPage from "@/pages/team-creation-page";
+import StreamerApplicationPage from "@/pages/streamer-application-page";
 import { ProtectedRoute } from "./lib/protected-route";
 import { AuthProvider } from "./hooks/use-auth";
 
@@ -19,8 +22,11 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={HomePage} />
-      <ProtectedRoute path="/teams" component={TeamsPage} />
+      <Route path="/teams" component={TeamsPage} />
+      <ProtectedRoute path="/team-creation" component={TeamCreationPage} />
+      <ProtectedRoute path="/player-profile" component={PlayerProfilePage} />
       <ProtectedRoute path="/matchmaking" component={MatchmakingPage} />
+      <ProtectedRoute path="/streamer-application" component={StreamerApplicationPage} />
       <Route path="/matches" component={MatchesPage} />
       <Route path="/tournaments" component={TournamentsPage} />
       <Route path="/news" component={NewsPage} />

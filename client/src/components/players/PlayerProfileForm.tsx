@@ -75,7 +75,7 @@ const PlayerProfileForm = ({ onSuccess }: PlayerProfileFormProps) => {
   });
   
   // Atualizar o formulário quando os dados do perfil existente estiverem disponíveis
-  React.useEffect(() => {
+  useEffect(() => {
     if (existingProfile) {
       setIsEditing(true);
       // Mapear e preencher os dados existentes
