@@ -1,0 +1,55 @@
+PROMPT COMPLETO PARA GERAR O SITE “CSPortugues”
+
+Cria um website completo e responsivo chamado CSPortugues, focado na comunidade competitiva portuguesa de Counter-Strike 2. O site deve incluir front-end moderno e original com um design escuro e elementos visuais inspirados em HUDs e interfaces de jogos FPS, e um back-end funcional para gerir utilizadores, equipas, partidas e conteúdos.
+
+Funcionalidades a incluir:
+	1.	Página Inicial (Home)
+	•	Destaques do momento (notícias, jogos ao vivo, torneios ativos)
+	•	Secção “Sobre a Plataforma”
+	•	Call to Action para registo/login
+	2.	Login e Registo de Utilizador
+	•	Autenticação via Firebase ou Supabase (email/senha)
+	•	Dashboard do utilizador com perfil, histórico e funcionalidades personalizadas
+	•	Sistema de permissões (jogador, equipa, streamer, caster, admin)
+	3.	Página de Equipas
+	•	Listagem de equipas com logos, lineup, estatísticas e links sociais
+	•	Formulário para criação/edição de equipas (apenas para utilizadores autenticados)
+	4.	Matchmaking / Recrutamento (Matchmaking Section)
+	•	Jogadores à procura de equipa
+	•	Equipas à procura de jogadores
+	•	Cards com perfis e botão “Contactar” (só disponível com login)
+	5.	Jogos e Resultados (Calendário de Partidas)
+	•	Lista de partidas anteriores com resultados
+	•	Partidas em direto com destaque (ligações a streamings)
+	•	Partidas futuras com data/hora e equipas envolvidas
+	6.	Competições
+	•	Torneios ativos, futuros e anteriores
+	•	Tabelas classificativas, fase de grupos, bracket de playoffs
+	•	Possibilidade de inscrição automática (login necessário)
+	7.	Notícias
+	•	Artigos atualizados sobre a comunidade CS portuguesa
+	•	Painel admin para adicionar notícias (acesso restrito)
+	8.	Streamers & Casters
+	•	Listagem de streamers e casters oficiais da plataforma
+	•	Links para os seus canais (Twitch, YouTube)
+	•	Formulário para se inscrever como streamer ou caster
+
+Requisitos técnicos:
+
+Frontend:
+	•	React + Tailwind CSS (ou Next.js com Tailwind para SSR)
+	•	Visual escuro estilo gamer (inspirado em CS2, HUD, glow effects)
+	•	Fonte Orbitron ou similar
+	•	Totalmente responsivo e com animações leves que prendam o utilizador
+
+Backend:
+	•	Firebase (Auth + Firestore) ou Supabase (Auth + Postgres)
+	•	Armazenamento de dados para: utilizadores, equipas, jogadores, partidas, notícias, inscrições
+	•	Sistema de permissões com base em roles
+	•	Realtime updates para jogos em direto e procura de jogadores
+
+Outros detalhes importantes:
+	•	Design original e envolvente que capture a atenção dos gamers
+	•	Estrutura pronta para ser escalada e adaptada para mobile
+	•	Componentes reutilizáveis com código limpo e organizado
+	•	Separação clara entre back-end e front-end
