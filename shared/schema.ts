@@ -29,6 +29,8 @@ export const teams = pgTable("teams", {
   description: text("description"),
   region: text("region"),
   tier: text("tier"),
+  status: text("status").default("pending"), // "pending", "approved", "rejected"
+  rejectionReason: text("rejection_reason"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at"),
 });
@@ -99,8 +101,14 @@ export const streamers = pgTable("streamers", {
   description: text("description"),
   role: text("role"), // "streamer", "caster", "both"
   socialLinks: json("social_links").default({}),
+  followers: text("followers"),
+  streams: text("streams"),
+  type: text("type"), // "streamer", "caster", "both"
   verified: boolean("verified").default(false),
+  applicationType: text("application_type"), // "streamer", "caster", "both"
+  rejectionReason: text("rejection_reason"),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at"),
 });
 
 export type Streamer = typeof streamers.$inferSelect;
